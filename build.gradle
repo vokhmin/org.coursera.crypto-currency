@@ -1,0 +1,45 @@
+apply plugin: 'java'
+apply plugin: 'idea'
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.7.+'
+    }
+}
+
+// In this section you declare where to find the dependencies of your project
+repositories {
+    // Use 'jcenter' for resolving your dependencies.
+    // You can declare any Maven/Ivy/file repository here.
+    jcenter()
+}
+
+ext.projectIds = ['group': 'net.vokhmin.cources.cryptocurrencies', 'version': '1.0-SNAPSHOT']
+
+allprojects {
+
+    group = projectIds.group
+    version = projectIds.version
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+}
+
+description = """"""
+
+configurations.all {
+
+    repositories {
+        maven { url "http://repo.maven.apache.org/maven2" }
+    }
+
+    dependencies {
+        testCompile 'junit:junit:4.12'
+        testCompile group: 'org.mockito', name: 'mockito-all', version: '1.9.5'
+        testCompile group: 'org.powermock', name: 'powermock-api-mockito', version: '1.5.6'
+    }
+}

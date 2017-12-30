@@ -1,0 +1,18 @@
+apply plugin: 'java'
+
+description = """Week 01"""
+
+configurations.all {
+}
+
+repositories {
+    maven { url "http://repo.maven.apache.org/maven2" }
+    maven { url "http://repo.marketcetera.org/maven" }
+}
+
+dependencies {
+    testCompile 'junit:junit:4.12'
+    testCompile group: 'org.mockito', name: 'mockito-all', version:'1.9.5'
+    testCompile group: 'org.springframework', name: 'spring-test', version:'4.2.3.RELEASE'
+    testCompile group: 'org.powermock', name: 'powermock-api-mockito', version:'1.5.6'
+}

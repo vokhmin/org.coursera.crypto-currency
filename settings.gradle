@@ -1,0 +1,3 @@
+rootProject.name = 'CryptoCurrencies'
+
+include 'week01'
