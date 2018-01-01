@@ -1,11 +1,10 @@
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
-public class TxHandler {
+public class MaxFeeTxHandler {
 
     private final UTXOPool pool;
 
@@ -14,7 +13,7 @@ public class TxHandler {
      * {@code utxoPool}. This should make a copy of utxoPool by using the UTXOPool(UTXOPool uPool)
      * constructor.
      */
-    public TxHandler(UTXOPool utxoPool) {
+    public MaxFeeTxHandler(UTXOPool utxoPool) {
         // IMPLEMENT THIS
         this.pool = new UTXOPool(utxoPool);
     }
@@ -38,10 +37,10 @@ public class TxHandler {
         // (2) the signatures onx each input of {@code tx} are valid,
         AtomicInteger i = new AtomicInteger();
         if (tx.getInputs().stream()
-                .anyMatch(in -> {
-                    Transaction.Output out = pool.getTxOutput(new UTXO(in.prevTxHash, in.outputIndex));
-                    return !Crypto.verifySignature(out.address, tx.getRawDataToSign(i.getAndIncrement()), in.signature);
-                })) {
+                .allMatch(in -> Crypto.verifySignature(
+                        pool.getTxOutput(new UTXO(in.prevTxHash, in.outputIndex)).address,
+                        tx.getRawDataToSign(i.getAndIncrement()),
+                        in.signature))) {
             return false;
         }
         // (3) no UTXO is claimed multiple times by {@code tx}
@@ -75,33 +74,17 @@ public class TxHandler {
      */
     public Transaction[] handleTxs(Transaction[] possibleTxs) {
         // IMPLEMENT THIS
-        List<Transaction> candidateTxs = Arrays.asList(possibleTxs);
-        List<Transaction> acceptedTxs = new ArrayList<>();
-        List<Transaction> nextTxs = new ArrayList<>();
-
-        candidateTxs.stream().forEach(tx -> {
-            if (isValidTx(tx)) {
-                for (int i = 0; i < tx.numOutputs(); i++) {
-                    pool.addUTXO(new UTXO(tx.getHash(), i), tx.getOutput(i));
-                }
-                acceptedTxs.add(tx);
-            } else {
-                nextTxs.add(tx);
-            }
-        });
-
-        nextTxs.stream().forEach(tx -> {
-            if (isValidTx(tx)) {
-                for (int i = 0; i < tx.numOutputs(); i++) {
-                    pool.addUTXO(new UTXO(tx.getHash(), i), tx.getOutput(i));
-                }
-                acceptedTxs.add(tx);
-            } else {
-//                nextTxs.add(tx);
-            }
-        });
-
-        return acceptedTxs.toArray(new Transaction[acceptedTxs.size()]);
+        Transaction[] acceptedTxs = Arrays.stream(possibleTxs)
+                .filter(this::isValidTx)
+                .collect(Collectors.toList())
+                .toArray(new Transaction[0]);
+        Arrays.stream(acceptedTxs)
+                .forEach(tx -> {
+                    AtomicInteger i = new AtomicInteger();
+                    tx.getOutputs().forEach(
+                            out -> pool.addUTXO(new UTXO(tx.getHash(), i.getAndIncrement()), out));
+                });
+        return acceptedTxs;
     }
 
 }
