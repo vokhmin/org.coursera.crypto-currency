@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/CryptoCurrencies.iml" filepath="$PROJECT_DIR$/.idea/modules/CryptoCurrencies.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/CryptoCurrencies_main.iml" filepath="$PROJECT_DIR$/.idea/modules/CryptoCurrencies_main.iml" group="CryptoCurrencies" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/CryptoCurrencies_test.iml" filepath="$PROJECT_DIR$/.idea/modules/CryptoCurrencies_test.iml" group="CryptoCurrencies" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/week01/week01.iml" filepath="$PROJECT_DIR$/.idea/modules/week01/week01.iml" group="week01" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/week01/week01_main.iml" filepath="$PROJECT_DIR$/.idea/modules/week01/week01_main.iml" group="week01" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/week01/week01_test.iml" filepath="$PROJECT_DIR$/.idea/modules/week01/week01_test.iml" group="week01" />
+    </modules>
+  </component>
+</project>
